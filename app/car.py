@@ -1,7 +1,7 @@
 import pygame
 
-from vector import Vector
-from direction import Direction
+from app.vector import Vector
+from app.direction import Direction
 
 from app.config import *
 
@@ -34,13 +34,13 @@ class Car(pygame.sprite.Sprite):
         self.position = self.position.add(self.speed, self.direction)
 
     def is_near(self, car):
-        if self.direction == Direction("up"):
+        if self.direction == Direction.UP:
             return self.position.y > car.position.y > self.position.y - 60
-        elif self.direction == Direction("right"):
+        elif self.direction == Direction.RIGHT:
             return self.position.x < car.position.x < self.position.x + 60
-        elif self.direction == Direction("down"):
+        elif self.direction == Direction.DOWN:
             return self.position.y < car.position.y < self.position.y + 60
-        elif self.direction == Direction("left"):
+        elif self.direction == Direction.LEFT:
             return self.position.x > car.position.x > self.position.x - 60
 
     def blit(self):

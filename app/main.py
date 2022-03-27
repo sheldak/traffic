@@ -1,6 +1,6 @@
 import pygame
 
-from map_loader import load_map
+from app.map_loader import load_map
 from app.config import MAP_PATH
 
 pygame.init()

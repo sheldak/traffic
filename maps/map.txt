@@ -1,7 +1,9 @@
 720 720
 roads
-h1 0 100 720 36
-v1 100 0 36 720
+h1 0 300 720 36
+v1 300 0 36 720
+junctions
+h1 v1
 cars
 h1 left 0 0
 h1 left 30 5

@@ -1,32 +1,41 @@
-from vector import Vector
+from enum import Enum
+
+from app.vector import Vector
 
 
-class Direction:
-    def __init__(self, direction):
-        self.direction = direction
-
-    def __hash__(self):
-        return self.direction.__hash__()
-
-    def __eq__(self, other):
-        return type(other) == Direction and self.direction == other.direction
+class Direction(Enum):
+    UP = 1
+    RIGHT = 2
+    DOWN = 3
+    LEFT = 4
 
     def opposite(self):
-        if self.direction == "up":
-            return Direction("down")
-        elif self.direction == "right":
-            return Direction("left")
-        elif self.direction == "down":
-            return Direction("up")
-        elif self.direction == "left":
-            return Direction("right")
+        if self == Direction.UP:
+            return Direction.DOWN
+        elif self == Direction.RIGHT:
+            return Direction.LEFT
+        elif self == Direction.DOWN:
+            return Direction.UP
+        elif self == Direction.LEFT:
+            return Direction.RIGHT
 
     def to_vector(self):
-        if self.direction == "up":
+        if self == Direction.UP:
             return Vector(0, -1)
-        elif self.direction == "right":
+        elif self == Direction.RIGHT:
             return Vector(1, 0)
-        elif self.direction == "down":
+        elif self == Direction.DOWN:
             return Vector(0, 1)
-        elif self.direction == "left":
+        elif self == Direction.LEFT:
             return Vector(-1, 0)
+
+
+def direction_from_string(direction):
+    if direction == "up":
+        return Direction.UP
+    elif direction == "right":
+        return Direction.RIGHT
+    elif direction == "down":
+        return Direction.DOWN
+    elif direction == "left":
+        return Direction.LEFT
