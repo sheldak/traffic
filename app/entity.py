@@ -1,8 +1,12 @@
 class Entity:
-    def __init__(self, entity, lane, preceding=None, following=None):
+    def __init__(self, entity, preceding=None, following=None):
         self.entity = entity
-        self.lane = lane
 
         self.preceding = preceding
         self.following = following
 
+    def update(self, entities, junction_ahead):
+        self.entity.update(list(map(lambda e: e.entity, entities)), junction_ahead)
+
+    def blit(self):
+        self.entity.blit()

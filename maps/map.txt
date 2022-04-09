@@ -1,19 +1,27 @@
 720 720
-roads
-h1 0 300 720 36
-v1 300 0 36 720
-junctions
-h1 v1
+streets
+h1 0 200 720 36
+v1 200 0 36 720
+h2 0 484 720 36
+v2 484 0 36 720
 cars
 h1 left 0 0
-h1 left 30 5
-h1 left 45 5
+h1 left 40 5
+h1 left 60 5
 h1 right 0 0
-h1 right 30 5
-h1 right 45 5
+h1 right 40 5
+h1 right 60 5
 v1 up 0 0
-v1 up 30 5
-v1 up 45 5
+v1 up 40 5
+v1 up 60 5
 v1 down 0 0
-v1 down 30 5
-v1 down 45 5
+v1 down 40 5
+v1 down 60 5
+h2 left 0 0
+h2 left 20 0
+h2 right 0 0
+h2 right 20 0
+v2 up 0 0
+v2 up 20 0
+v2 down 0 0
+v2 down 20 0

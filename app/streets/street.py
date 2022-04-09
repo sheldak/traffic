@@ -1,12 +1,9 @@
-import pygame
-
 from app.direction import Direction
-from app.roads.lane import Lane
 
 from app.config import *
 
 
-class Road:
+class Street:
     def __init__(self, screen, name, x, y, width, height):
         self.screen = screen
 
@@ -17,9 +14,10 @@ class Road:
         self.height = height
 
         self.start_points = None
-        self.lanes = None
         self.set_start_points()
-        self.set_lanes()
+
+        self.roads = []
+        self.start_roads = None
 
     def set_start_points(self):
         if self.width > self.height:
@@ -33,23 +31,38 @@ class Road:
                 Direction.DOWN: (self.start_x + CAR_WIDTH + 2 * ROAD_GAP, self.start_y + self.height - CAR_HEIGHT)
             }
 
-    def set_lanes(self):
+    def add_road(self, road):
+        self.roads.append(road)
+
+    def set_start_roads(self):
         if self.width > self.height:
-            self.lanes = {
-                Direction.LEFT: Lane(Direction.LEFT),
-                Direction.RIGHT: Lane(Direction.RIGHT)
+            self.start_roads = {
+                Direction.LEFT: self.roads[0],
+                Direction.RIGHT: self.roads[-1]
             }
         else:
-            self.lanes = {
-                Direction.UP: Lane(Direction.UP),
-                Direction.DOWN: Lane(Direction.DOWN)
+            self.start_roads = {
+                Direction.UP: self.roads[0],
+                Direction.DOWN: self.roads[-1]
             }
 
+    def get_initial_lane_for_car(self, direction):
+        return self.start_roads[direction.opposite()].get_initial_lane_for_car(direction)
+
     def is_vertical(self):
-        return Direction.UP in self.lanes.keys()
+        return Direction.UP in self.start_points.keys()
 
     def is_horizontal(self):
-        return Direction.LEFT in self.lanes.keys()
+        return Direction.LEFT in self.start_points.keys()
+
+    def update(self):
+        for road in self.roads:
+            road.update()
 
     def blit(self):
-        pygame.draw.rect(self.screen, ROAD_COLOR, (self.start_x, self.start_y, self.width, self.height))
+        for road in self.roads:
+            road.blit()
+
+    def blit_cars(self):
+        for road in self.roads:
+            road.blit_cars()
