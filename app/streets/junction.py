@@ -70,6 +70,8 @@ class Junction:
 
         for entity in self.entities.copy():
             entity.update(self.entities, None)
+            entity.maybe_turn(self)
+
             self.check_being_on_junction(entity)
 
     def blit(self):

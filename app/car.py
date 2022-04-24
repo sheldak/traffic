@@ -1,4 +1,5 @@
 import pygame
+import random
 
 from app.direction import Direction
 from app.streets.junction import Junction
@@ -21,6 +22,14 @@ class Car(pygame.sprite.Sprite):
 
         self.lane = lane
 
+        self.turns = []
+        self.should_turn = True
+        self.calculate_turns()
+
+    def calculate_turns(self):
+        for i in range(20):
+            self.turns.append(random.choice([Direction.LEFT, Direction.RIGHT]))
+
     def update(self, cars, nearest_junction):
         car_ahead = None
         for car in cars:
@@ -38,6 +47,42 @@ class Car(pygame.sprite.Sprite):
         self.speed = max(min(self.speed + acceleration, MAX_SPEED), 0)
 
         self.position = self.position.add(self.speed, self.direction)
+
+    def maybe_turn(self, junction):
+        if self.should_turn:
+            farther_lane_offset = ROAD_SIZE - CAR_WIDTH - ROAD_GAP
+
+            if self.direction.turn(self.turns[0]) == Direction.UP:
+                if self.direction == Direction.LEFT and self.position.x <= junction.start_x + farther_lane_offset or \
+                        self.direction == Direction.RIGHT and self.position.x >= junction.start_x + farther_lane_offset:
+                    self.position.x = junction.start_x + farther_lane_offset
+                else:
+                    return
+            elif self.direction.turn(self.turns[0]) == Direction.RIGHT:
+                if self.direction == Direction.UP and self.position.y <= junction.start_y + farther_lane_offset or \
+                        self.direction == Direction.DOWN and self.position.y >= junction.start_y + farther_lane_offset:
+                    self.position.y = junction.start_y + farther_lane_offset
+                else:
+                    return
+            elif self.direction.turn(self.turns[0]) == Direction.DOWN:
+                if self.direction == Direction.LEFT and self.position.x <= junction.start_x + ROAD_GAP or \
+                        self.direction == Direction.RIGHT and self.position.x >= junction.start_x + ROAD_GAP:
+                    self.position.x = junction.start_x + ROAD_GAP
+                else:
+                    return
+            elif self.direction.turn(self.turns[0]) == Direction.LEFT:
+                if self.direction == Direction.UP and self.position.y <= junction.start_y + ROAD_GAP or \
+                        self.direction == Direction.DOWN and self.position.y >= junction.start_y + ROAD_GAP:
+                    self.position.x = junction.start_x + ROAD_GAP
+                else:
+                    return
+
+            self.direction = self.direction.turn(self.turns[0])
+            self.turns = self.turns[1:]
+            self.should_turn = False
+
+    def turn_on_next_junction(self):
+        self.should_turn = True
 
     def is_car_near(self, car):
         if self.direction == car.direction:

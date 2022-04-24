@@ -4,20 +4,17 @@ from app.vector import Vector
 
 
 class Direction(Enum):
-    UP = 1
-    RIGHT = 2
-    DOWN = 3
-    LEFT = 4
+    UP = 0
+    RIGHT = 1
+    DOWN = 2
+    LEFT = 3
 
     def opposite(self):
-        if self == Direction.UP:
-            return Direction.DOWN
-        elif self == Direction.RIGHT:
-            return Direction.LEFT
-        elif self == Direction.DOWN:
-            return Direction.UP
-        elif self == Direction.LEFT:
-            return Direction.RIGHT
+        return Direction((self.value + 2) % 4)
+
+    def turn(self, direction):
+        to_add = 1 if direction == Direction.RIGHT else -1
+        return Direction((self.value + to_add) % 4)
 
     def to_vector(self):
         if self == Direction.UP:

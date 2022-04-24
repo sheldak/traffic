@@ -19,6 +19,8 @@ class Lane:
 
         self.last_entity = entity
 
+        entity.turn_on_next_junction()
+
     def update(self):
         for entity in self.entities:
             if entity.preceding is None:
@@ -43,7 +45,6 @@ class Lane:
                 self.junction_ahead.add_entity(self.first_entity)
                 self.entities.remove(self.first_entity)
                 self.first_entity = None
-
 
     def blit(self):
         for entity in self.entities:
