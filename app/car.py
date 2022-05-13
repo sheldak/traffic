@@ -9,7 +9,7 @@ from app.config import *
 
 
 class Car(pygame.sprite.Sprite):
-    def __init__(self, screen, x, y, direction, speed, lane):
+    def __init__(self, screen, x, y, direction, destination, speed, lane):
         super(Car, self).__init__()
         self.surf = pygame.Surface((CAR_WIDTH, CAR_HEIGHT))
         self.surf.fill(CAR_COLOR)
@@ -19,6 +19,7 @@ class Car(pygame.sprite.Sprite):
         self.position = Vector(x, y)
         self.speed = speed
         self.direction = direction
+        self.destination = destination
 
         self.lane = lane
 

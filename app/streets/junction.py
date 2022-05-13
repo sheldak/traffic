@@ -31,6 +31,9 @@ class Junction:
 
         self.entities = set()
 
+    def __hash__(self):
+        return (self.horizontal_street.name + self.vertical_street.name).__hash__()
+
     def calculate_junction_position(self):
         self.start_x = self.vertical_street.start_x
         self.start_y = self.horizontal_street.start_y

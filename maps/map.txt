@@ -5,23 +5,23 @@ v1 200 0 36 720
 h2 0 484 720 36
 v2 484 0 36 720
 cars
-h1 left 0 0
-h1 left 40 5
-h1 left 60 5
-h1 right 0 0
-h1 right 40 5
-h1 right 60 5
-v1 up 0 0
-v1 up 40 5
-v1 up 60 5
-v1 down 0 0
-v1 down 40 5
-v1 down 60 5
-h2 left 0 0
-h2 left 20 0
-h2 right 0 0
-h2 right 20 0
-v2 up 0 0
-v2 up 20 0
-v2 down 0 0
-v2 down 20 0
+h1 left h1-right 0 0
+h1 left h2-right 40 5
+h1 left v2-up 60 5
+h1 right h2-left 0 0
+h1 right h1-right 40 5
+h1 right h2-left 60 5
+v1 up v2-up 0 0
+v1 up h1-left 40 5
+v1 up h1-right 60 5
+v1 down v2-down 0 0
+v1 down h2-right 40 5
+v1 down v1-down 60 5
+h2 left v2-up 0 0
+h2 left h2-left 20 0
+h2 right v1-down 0 0
+h2 right h1-right 20 0
+v2 up v2-up 0 0
+v2 up v1-down 20 0
+v2 down v2-down 0 0
+v2 down h1-right 20 0

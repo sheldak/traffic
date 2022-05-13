@@ -3,6 +3,7 @@ import pygame
 from app.car import Car
 from app.direction import Direction, direction_from_string
 from app.entity import Entity
+from app.graph.graph import Graph
 from app.map import Map
 from app.streets.junction import Junction
 from app.streets.road import Road
@@ -37,6 +38,7 @@ def load_map(file_path):
     Next lines - 4 values:
         - street's name - the street on which the car should appear
         - initial direction of the car (`left`, `right`, `up` or `down`)
+        - car's destination in form `street_name-direction`
         - spawn time of car (in ticks)
         - initial speed of car in pixels per tick
     """
@@ -48,6 +50,8 @@ def load_map(file_path):
         streets = {}
         junctions = []
 
+        graph = Graph()
+
         future_cars = []
 
         mode = None
@@ -56,20 +60,24 @@ def load_map(file_path):
                 mode = "streets"
             elif line == "cars\n":
                 junctions = split_streets(screen, streets)
+                graph.initialize_graph(junctions[0])
                 mode = "cars"
             else:
                 if mode == "streets":
                     name, x, y, width, height = line.split()
                     streets[name] = Street(screen, name, int(x), int(y), int(width), int(height))
                 elif mode == "cars":
-                    street_name, direction_string, spawn_time, speed = line.split()
+                    street_name, direction_string, destination, spawn_time, speed = line.split()
                     direction = direction_from_string(direction_string)
 
                     x, y = streets[street_name].start_points[direction]
 
                     car_direction = direction.opposite()
                     lane = streets[street_name].get_initial_lane_for_car(car_direction)
-                    car = Car(screen, x, y, car_direction, int(speed), lane)
+
+                    destination = tuple(destination.split("-"))
+
+                    car = Car(screen, x, y, car_direction, destination, int(speed), lane)
 
                     if int(spawn_time) == 0:
                         lane.add_entity(Entity(car))
