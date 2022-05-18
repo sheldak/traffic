@@ -60,7 +60,7 @@ def load_map(file_path):
                 mode = "streets"
             elif line == "cars\n":
                 junctions = split_streets(screen, streets)
-                graph.initialize_graph(junctions[0])
+                graph.initialize(junctions[0])
                 mode = "cars"
             else:
                 if mode == "streets":
@@ -75,9 +75,11 @@ def load_map(file_path):
                     car_direction = direction.opposite()
                     lane = streets[street_name].get_initial_lane_for_car(car_direction)
 
-                    destination = tuple(destination.split("-"))
+                    destination = destination.split("-")
+                    destination[1] = direction_from_string(destination[1])
+                    destination = tuple(destination)
 
-                    car = Car(screen, x, y, car_direction, destination, int(speed), lane)
+                    car = Car(screen, x, y, car_direction, destination, int(speed), lane, graph)
 
                     if int(spawn_time) == 0:
                         lane.add_entity(Entity(car))
@@ -120,6 +122,7 @@ def split_streets(screen, streets):
 
             junction_left = junctions[i * len(vertical_streets) + j - 1] if j > 0 else None
             road_left = Road(
+                horizontal_street.name,
                 screen,
                 start_x,
                 horizontal_street.start_y,
@@ -139,6 +142,7 @@ def split_streets(screen, streets):
 
             junction_up = junctions[(i - 1) * len(vertical_streets) + j] if i > 0 else None
             road_up = Road(
+                vertical_street.name,
                 screen,
                 vertical_street.start_x,
                 start_y,
@@ -160,6 +164,7 @@ def split_streets(screen, streets):
 
             if i == len(horizontal_streets) - 1:
                 road_down = Road(
+                    vertical_street.name,
                     screen,
                     vertical_street.start_x,
                     junction.start_y + junction.width,
@@ -176,6 +181,7 @@ def split_streets(screen, streets):
 
             if j == len(vertical_streets) - 1:
                 road_right = Road(
+                    horizontal_street.name,
                     screen,
                     junction.start_x + junction.width,
                     horizontal_street.start_y,

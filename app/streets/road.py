@@ -7,7 +7,9 @@ from app.config import *
 
 
 class Road:
-    def __init__(self, screen, x, y, width, height, junctions):
+    def __init__(self, name, screen, x, y, width, height, junctions):
+        self.name = name
+
         self.screen = screen
 
         self.start_x = x

@@ -13,7 +13,15 @@ class Direction(Enum):
         return Direction((self.value + 2) % 4)
 
     def turn(self, direction):
-        to_add = 1 if direction == Direction.RIGHT else -1
+        if direction == Direction.RIGHT:
+            to_add = 1
+        elif direction == Direction.UP:
+            to_add = 0
+        elif direction == Direction.LEFT:
+            to_add = -1
+        else:
+            to_add = 2
+
         return Direction((self.value + to_add) % 4)
 
     def to_vector(self):

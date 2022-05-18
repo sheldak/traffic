@@ -9,7 +9,7 @@ from app.config import *
 
 
 class Car(pygame.sprite.Sprite):
-    def __init__(self, screen, x, y, direction, destination, speed, lane):
+    def __init__(self, screen, x, y, direction, destination, speed, lane, graph):
         super(Car, self).__init__()
         self.surf = pygame.Surface((CAR_WIDTH, CAR_HEIGHT))
         self.surf.fill(CAR_COLOR)
@@ -23,13 +23,14 @@ class Car(pygame.sprite.Sprite):
 
         self.lane = lane
 
+        self.graph = graph
+
         self.turns = []
         self.should_turn = True
         self.calculate_turns()
 
     def calculate_turns(self):
-        for i in range(20):
-            self.turns.append(random.choice([Direction.LEFT, Direction.RIGHT]))
+        self.turns = self.graph.find_path_to_destination(self.lane.junction_ahead, self.direction, self.destination)
 
     def update(self, cars, nearest_junction):
         car_ahead = None
